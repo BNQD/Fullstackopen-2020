@@ -3,23 +3,20 @@ import axios from 'axios'
 
 const GetCountryDetails = (props) => {
 	const [ countryWeather, setCountryWeather ] = useState('')
-	
 	const countryDetails = props.countryData.filter(x => x.name.includes(props.countryName))[0]
-	const api_key = process.env.REACT_APP_API_KEY
-	const countryWeatherURL = `http://api.weatherstack.com/current?access_key=${api_key}&query=${countryDetails.name}`.replace(' ', '')
 	
-	console.log(countryWeatherURL)
 	useEffect (() => {
-				axios
-					.get(countryWeatherURL)
-					.then(response => {
-						setCountryWeather([
-							response.data.current.temperature, 
-							response.data.current.weather_icons,
-							response.data.current.wind_speed, 
-							response.data.current.wind_dir])
-					})
-			}, [])
+		const api_key = process.env.REACT_APP_API_KEY
+			axios
+				.get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${countryDetails.name}`.replace(' ', ''))
+				.then(response => {
+					setCountryWeather([
+						response.data.current.temperature, 
+						response.data.current.weather_icons,
+						response.data.current.wind_speed, 
+						response.data.current.wind_dir])
+				})
+		}, [])
 	
 	return (
 		<div>
@@ -35,7 +32,7 @@ const GetCountryDetails = (props) => {
 			
 			<h3> Weather in the Capital </h3>
 			<p> Temperature:  {countryWeather[0]} </p>
-			<img src={countryWeather[1]} />
+			<img src={countryWeather[1]} alt='weather'/>
 			<p> Wind {countryWeather[2]} {countryWeather[3]} </p>
 			
 		</div>

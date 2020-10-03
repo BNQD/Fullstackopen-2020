@@ -17,8 +17,6 @@ const App = () => {
 					.then(response => setCountriesData(response.data))
 			}, [])
 
-	const countryNames = countriesData.map(country => country.name)
-
 	return (
 		<div>
 			<p> 
