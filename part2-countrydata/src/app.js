@@ -75,7 +75,7 @@ const FilteredNames = (props) => {
 }
 
 const App = () => {
-	const [ filterCountries, setFilterCountries ] = useState('Canad')
+	const [ filterCountries, setFilterCountries ] = useState('')
 	const [ countriesData, setCountriesData ] = useState([])
 	
 	const handleFilterChange = (event) => {
