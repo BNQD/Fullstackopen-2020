@@ -11,12 +11,6 @@ const create = newObject => {
 
 const update = (id, newObject) => {
   axios.put(`${baseUrl}/${id}`, newObject)
-	window.location.reload()
-}
-
-const post = (object) => {
-	axios
-		.post (baseUrl, object)
 }
 
 const remove = (id, name) => {
@@ -25,7 +19,6 @@ const remove = (id, name) => {
 	if (confirmation){
 		axios
 			.delete(`${baseUrl}/${id}`)
-		window.location.reload()
 	} 
 
 }

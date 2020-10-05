@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import Filter from './Filter';
 import Phonebook from './Phonebook'
@@ -15,6 +14,8 @@ const App = () => {
 	const [ newNumber, setNewNumber ] = useState('')
 	const [filterName, setFilterName] = useState('')
 	
+	const [	changeFlag, setChangeFlag ] = useState(false)
+	
 	const handleNameChange = (event) => {
 		setNewName(event.target.value)
 	}
@@ -27,14 +28,9 @@ const App = () => {
 		setFilterName(event.target.value)
 	}
 	
-	//Fetch Persons Data
-	useEffect(() => {
-		personService
-			.getAll()
-			.then(response => {
-				setPersons(response)
-			})
-	}, [])
+	const handleDataChange = (event) => {
+		setChangeFlag(!changeFlag)
+	}
 	
 	const addName = (event) => {
 		//Create persons Object with new Name + Phone num
@@ -54,17 +50,27 @@ const App = () => {
 			if (confirmation) {
 				const current_id = (persons.find(person => person.name === newName)).id
 				personService.update(current_id, personObject)
+				handleDataChange()
 			}
 		} else {
 			personService
 				.create(personObject)
+			handleDataChange()
 		}
 		event.preventDefault()
 		
-		setPersons(person_names.includes(newName) ? persons : persons.concat(personObject))
+		
+			
+		//setPersons(person_names.includes(newName) ? persons : persons.concat(personObject))
 	}
 
-	
+	useEffect(() => {
+		personService
+			.getAll()
+			.then(response => {
+				setPersons(response)
+			})
+	}, [changeFlag])
 
   return (
     <div>
@@ -75,7 +81,7 @@ const App = () => {
 			<Phonebook addName={addName} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       
 			<h2>Numbers</h2>
-			<Numbers persons={persons} filterName={filterName}/>
+			<Numbers persons={persons} filterName={filterName} handleDelete={handleDataChange}/>
     </div>
   )
 }

@@ -11,11 +11,9 @@ const Numbers = (props) => {
 						<tr key = {person.id}>
 							<td>{person.name}</td>
 							<td>{person.number}</td>
-							<td> <button onClick = {() => personService.remove(person.id, person.name)}> Delete </button> </td>
+							<td> <button onClick = {() => {personService.remove(person.id, person.name);props.handleDelete()}}> Delete </button> </td>
 						</tr>)
-						
 					}
-					
 				</tbody>
 			</table>
 		</div>
