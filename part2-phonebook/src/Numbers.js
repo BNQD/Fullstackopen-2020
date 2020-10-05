@@ -1,5 +1,7 @@
 import React from 'react'
 
+import personService from './services/persons'
+
 const Numbers = (props) => {
 	return (
 		<div>
@@ -9,8 +11,11 @@ const Numbers = (props) => {
 						<tr key = {person.id}>
 							<td>{person.name}</td>
 							<td>{person.number}</td>
+							<td> <button onClick = {() => personService.remove(person.id, person.name)}> Delete </button> </td>
 						</tr>)
+						
 					}
+					
 				</tbody>
 			</table>
 		</div>

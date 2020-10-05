@@ -5,6 +5,8 @@ import Filter from './Filter';
 import Phonebook from './Phonebook'
 import Numbers from './Numbers'
 
+import personService from './services/persons'
+
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -25,29 +27,44 @@ const App = () => {
 		setFilterName(event.target.value)
 	}
 	
+	//Fetch Persons Data
 	useEffect(() => {
-		console.log('effect')
-		axios
-			.get('http://localhost:3001/persons')
+		personService
+			.getAll()
 			.then(response => {
-				setPersons(response.data)
+				setPersons(response)
 			})
 	}, [])
 	
 	const addName = (event) => {
+		//Create persons Object with new Name + Phone num
 		const personObject = {
 			name: newName,
 			number: newNumber,
-			id: persons.length+1
+			id: persons.reduce (
+				(max, person) => (person.id > max ? person.id : max),
+				persons[0].id
+			) + 1
 		}
+		
 		const person_names = persons.map(person => person.name)
 		
 		if (person_names.includes(newName)){
-			alert (newName + ' is already added to phonebook')
+			const confirmation = window.confirm(`${newName} is already added to phonebook, replace the old number with the new one?`)
+			if (confirmation) {
+				const current_id = (persons.find(person => person.name === newName)).id
+				personService.update(current_id, personObject)
+			}
+		} else {
+			personService
+				.create(personObject)
 		}
 		event.preventDefault()
-		setPersons(person_names.includes(newName) ? persons : persons.concat(personObject) )
+		
+		setPersons(person_names.includes(newName) ? persons : persons.concat(personObject))
 	}
+
+	
 
   return (
     <div>
@@ -58,8 +75,7 @@ const App = () => {
 			<Phonebook addName={addName} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       
 			<h2>Numbers</h2>
-			<Numbers persons={persons} filterName={filterName} />
-		
+			<Numbers persons={persons} filterName={filterName}/>
     </div>
   )
 }
