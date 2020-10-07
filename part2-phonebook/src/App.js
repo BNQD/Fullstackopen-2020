@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import Filter from './Filter';
-import Phonebook from './Phonebook'
+import Filter from './Filter'
 import Numbers from './Numbers'
+import Phonebook from './Phonebook'
+import Notification from './Notification'
 
 import personService from './services/persons'
 
@@ -15,7 +16,10 @@ const App = () => {
 	const [ newNumber, setNewNumber ] = useState('')
 	const [filterName, setFilterName] = useState('')
 	
+	const [ message, setMessage] = useState ('')
+	
 	let newPersons = [...persons]
+	let newMessage = ''
 	
 	const handleNameChange = (event) => {
 		setNewName(event.target.value)
@@ -33,6 +37,10 @@ const App = () => {
 		const delete_id = newPersons.findIndex(person => person.id === id)
 		newPersons.pop(delete_id)
 		setPersons(newPersons)
+	}
+	
+	const handleMessageChange = (message) => {
+		setMessage(message)
 	}
 	
 	const addName = (event) => {
@@ -56,15 +64,18 @@ const App = () => {
 				
 				personService.update(current_id, personObject)
 				newPersons[current_index].number=newNumber
+				newMessage = `Changed ${newName}'s Number`
 			}
 		} else {
 			personService
 				.create(personObject)
 			newPersons = newPersons.concat(personObject)
+			newMessage = `Added ${newName}`
 		}
 		event.preventDefault()
 
 		setPersons(newPersons)
+		setMessage(newMessage)
 	}
 
 	useEffect(() => {
@@ -77,6 +88,7 @@ const App = () => {
 
   return (
     <div>
+			<Notification message={message} />
 			<h2> Filter Phone Numbers </h2>
 			<Filter filterName={filterName} onChange={handleFilterChange} />
 			
@@ -84,7 +96,7 @@ const App = () => {
 			<Phonebook addName={addName} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       
 			<h2>Numbers</h2>
-			<Numbers persons={persons} filterName={filterName} handleDataDeleteEvent = {handleDataDeleteEvent} />
+			<Numbers persons={persons} filterName={filterName} handleDataDeleteEvent = {handleDataDeleteEvent} handleMessageChange = {handleMessageChange}/>
     </div>
   )
 }

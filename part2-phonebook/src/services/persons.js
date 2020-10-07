@@ -13,13 +13,24 @@ const update = (id, newObject) => {
   axios.put(`${baseUrl}/${id}`, newObject)
 }
 
-const remove = (id, name) => {
+const remove = (id, name, handleMessageChange) => {
 	const confirmation = window.confirm(`Delete ${name}?`)
 	
 	if (confirmation){
 		axios
 			.delete(`${baseUrl}/${id}`)
+			.then(() => {
+				console.log(`${name} deleted`)
+				handleMessageChange(`${name} removed successfully`)
+			})
+			.catch(error => {
+				handleMessageChange(`Error: ${name} has already been removed`)
+			})
 	} 
+	
+	return ''
+	
+	
 
 }
 
