@@ -10,7 +10,7 @@ const create = newObject => {
 }
 
 const update = (id, newObject) => {
-  axios.put(`${baseUrl}/${id}`, newObject)
+  return axios.put(`${baseUrl}/${id}`, newObject)
 }
 
 const remove = (id, name, handleMessageChange) => {
