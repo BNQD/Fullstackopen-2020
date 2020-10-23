@@ -35,7 +35,7 @@ const App = () => {
 	
 	const handleDataDeleteEvent = (id) => {
 		const delete_id = newPersons.findIndex(person => person.id === id)
-		newPersons.splice(delete_id, 1)
+		newPersons.pop(delete_id)
 		setPersons(newPersons)
 	}
 	
@@ -62,36 +62,20 @@ const App = () => {
 				const current_id = (persons.find(person => person.name === newName)).id
 				const current_index = (persons.findIndex(person => person.name === newName))
 				
-				personService
-				    .update(current_id, personObject)
-				    .then(() => {
-				        setMessage(`Changed ${newName}'s Number`)
-				        newPersons[current_index].number=newNumber
-				        setPersons(newPersons)
-								debugger
-				     })
-				    .catch (error => {
-								console.log('update error')
-				        setMessage(`Error ${error.response.data}`)
-				        setPersons(newPersons)
-				    })
+				personService.update(current_id, personObject)
+				newPersons[current_index].number=newNumber
+				newMessage = `Changed ${newName}'s Number`
 			}
 		} else {
 			personService
 				.create(personObject)
-				.then(() => {
-				    setMessage(`Added ${newName}`)
-				    setPersons(newPersons.concat(personObject))
-				})
-				.catch(error => {
-				    setPersons(newPersons)
-				    setMessage(`Error ${error.response.data}`)
-				})
-
+			newPersons = newPersons.concat(personObject)
+			newMessage = `Added ${newName}`
 		}
 		event.preventDefault()
 
 		setPersons(newPersons)
+		setMessage(newMessage)
 	}
 
 	useEffect(() => {
