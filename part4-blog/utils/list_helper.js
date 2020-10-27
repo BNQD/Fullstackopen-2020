@@ -39,7 +39,6 @@ const mostLikes = (blogs) => {
 			total_likes = _.sumBy(x, 'likes')
 			if (total_likes > most_likes){
 				most_likes = total_likes
-				console.log('HERHERHERHERHERHER')
 				author = y
 			}
 		}

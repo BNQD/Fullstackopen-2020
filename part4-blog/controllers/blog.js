@@ -11,7 +11,6 @@ blogRouter.get('/', (request, response) => {
 
 blogRouter.post('/', (request, response) => {
   const blog = new Blog(request.body)
-
   blog
     .save()
     .then(result => {
@@ -19,5 +18,18 @@ blogRouter.post('/', (request, response) => {
     })
 })
 
+blogRouter.get('/:id', (request, response) => {
+	Blog.findById(request.params.id).then(blogs => {
+		response.json(blogs)
+	})
+})
+
+blogRouter.delete(`/:id`, (request, response) => {
+	Blog
+		.findByIdAndRemove(request.params.id)
+		.then(result => {
+			response.status(204).json(result)
+		})
+})
 
 module.exports = blogRouter
