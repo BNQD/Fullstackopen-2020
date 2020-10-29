@@ -1,33 +1,28 @@
 const Blog = require('../models/blog')
+const supertest = require('supertest')
+const app = require('../app')
+const api = supertest(app)
 
 const initialBlogs = [
 	{
 		'title':'Test Title 1',
 		'author':'Test Author 1',
-		'likes':5,
-		'id':'5f92ea5dd276d33d30553c75'
+		'likes':5
 	},
 	{
 		'title':'Test Title 2',
 		'author':'Test Author 2',
-		'likes':25,
-		'id':'5f92ea5dd276d33d30883c75'
+		'likes':25
 	},
 ]
 
 const noTitle = [
 	{
 		'author':'Missing Title',
-		'likes':222,
-		'id':'3werwerwerwer'
+		'likes':222
 	}
 ]
 
-const blogsInDb = async () => {
-	const blogs = await Blog.find({})
-	return blogs.map(blog => blog.toJSON())
-}
-
 module.exports = {
-	initialBlogs, blogsInDb, noTitle
+	initialBlogs, noTitle
 }

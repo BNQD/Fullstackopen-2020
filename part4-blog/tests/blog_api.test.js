@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+require('express-async-errors')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
@@ -8,14 +9,17 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
 	await Blog.deleteMany({})
-	
-	let blogObject = new Blog(helper.initialBlogs[0])
-	await blogObject.save()
-	
-	blogObject = new Blog(helper.initialBlogs[1])
-	await blogObject.save()
+	helper.initialBlogs.forEach(async (blog) => {
+		let blogObject = await new Blog(blog)
+		await blogObject.save()
+	})
 })
 
+
+test ('blogs contain id field', async () => {
+	const response = await api.get('/api/blogs/')
+	expect(response.body[0].id).toBeDefined()
+})
 
 test('blogs are returned as json', async () => {
   await api
@@ -27,15 +31,6 @@ test('blogs are returned as json', async () => {
 test('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(helper.initialBlogs.length)
-})
-
-test('a specific blog is within the returned notes', async () => {
-  const response = await api.get('/api/blogs')
-
-  const contents = response.body.map(r => r.title)
-  expect(contents).toContain(
-    'Test Title 1'
-  )
 })
 
 test('async a valid blog can be added', async () => {
@@ -60,20 +55,17 @@ test('async a valid blog can be added', async () => {
 	)
 })
 
-
 test('blog can be deleted', async () => {
-	const blogsStart = helper.initialBlogs
+	const response = await api.get('/api/blogs/')
+	const blogsStart = response.body
 	const blogToDelete = blogsStart[0]
-	
-	console.log(blogsStart)
-	console.log(blogToDelete)
 	
 	console.log(blogToDelete.id)
 	
 	await api
 		.delete(`api/blogs/${blogToDelete.id}`)
 	
-	const blogsAtEnd = await helper.blogsInDb()
+	const blogsAtEnd = await api.get('/api/blogs')
 	
 	expect (blogsAtEnd).toHaveLength(
 		helper.initialBlogs.length -1
@@ -86,19 +78,13 @@ test('blog can be deleted', async () => {
 })
 
 
-/*
 test ('blog without title can not be added', async () => {
-	try {
-		await api.
-			post('/api/blogs')
-			.send(helper.noTitle)
-	}	catch (exception){
-		console.log(exception)
-	}		
-	
-	
+	await api.
+		post('/api/blogs')
+		.send(helper.noTitle)
+		.expect(400)
 })
-*/
+
 
 
 
