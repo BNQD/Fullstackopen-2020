@@ -15,23 +15,26 @@ beforeEach(async () => {
 	})
 })
 
-
-test ('blogs contain id field', async () => {
-	const response = await api.get('/api/blogs/')
-	expect(response.body[0].id).toBeDefined()
-})
+describe (('blog validation'), () => {
+	test ('blogs contain id field', async () => {
+		const response = await api.get('/api/blogs/')
+		expect(response.body[0].id).toBeDefined()
+	})
 
 test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
+	})
+	
+	test('all blogs are returned', async () => {
+		let response = await api.get('/api/blogs');
+		//await expect((async () => {api.get('/api/blogs')}).toHaveLength(helper.initialBlogs.length)
+		expect(response.body).toHaveLength(helper.initialBlogs.length)
+	})
 })
 
-test('all blogs are returned', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.initialBlogs.length)
-})
 
 test('async a valid blog can be added', async () => {
 	const newBlog = {
@@ -60,8 +63,6 @@ test('blog can be deleted', async () => {
 	const blogsStart = response.body
 	const blogToDelete = blogsStart[0]
 	
-	console.log(blogToDelete.id)
-	
 	await api
 		.delete(`api/blogs/${blogToDelete.id}`)
 	
@@ -84,21 +85,6 @@ test ('blog without title can not be added', async () => {
 		.send(helper.noTitle)
 		.expect(400)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 afterAll(() => {
   mongoose.connection.close()

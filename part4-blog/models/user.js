@@ -1,34 +1,39 @@
 const mongoose = require('mongoose')
 const config = require('../utils/config')
 
-const blogSchema = new mongoose.Schema({
-  title: {
+const userSchema = new mongoose.Schema({
+  username: {
+		type: String,
+		minlength: 3,
+		required:true,
+		unique: true
+	},
+  name: {
 		type: String,
 		required: true
 	},
-  author: {
-		type: String,
-		required: true
-	},
-  url: String,
-  likes: Number,
-	user: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User'
-	}
+  passwordHash: String,
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Blog'
+    }
+  ],
 })
 
-const Blog = mongoose.model('Blog', blogSchema)
+const User = mongoose.model('User', userSchema)
 
 const mongoUrl = config.MONGODB_URI
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
-blogSchema.set('toJSON', {
+userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
+    // the passwordHash should not be revealed
+    delete returnedObject.passwordHash
   }
 })
 
-module.exports = mongoose.model('Blog', blogSchema)
+module.exports = User

@@ -14,7 +14,9 @@ const unknownEndpoint = (request, response) => {
 
 const errorHandler = (error, request, response, next) => {
 	if (error.name === 'ValidationError'){
-		response.status(400).send({ error: 'bad request' })
+		response.status(400).send({ error: error.message })
+	} else if (error.name ==='BadRequest'){
+		response.status(400).send({ error: error.message })
 	}
 	if (process.env.NODE_ENV !== 'test') {
 		logger.error(error.message)

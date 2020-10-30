@@ -28,8 +28,6 @@ describe ('total likes', () => {
 })
 
 describe ('favorite blog', () => {
-	
-	
 	test ('favorite blog from list of blogs', () => {
 		const result = listHelper.favoriteBlog(blogs)
 		const expected = {
@@ -42,7 +40,7 @@ describe ('favorite blog', () => {
 	})
 })
 
-describe ('most blogs by author', () => {
+describe ('tests for authors', () => {
 	test ('most blogs written from list of blogs', () => {
 		const result = listHelper.mostBlogs(blogs)
 		const expected = {
@@ -52,9 +50,7 @@ describe ('most blogs by author', () => {
 		
 		expect(result).toEqual(expected)
 	})
-})
-
-describe ('most liked author', () => {
+	
 	test ('highest number of total likes from author', () => {
 		const result = listHelper.mostLikes(blogs)
 		const expected = {
@@ -65,18 +61,4 @@ describe ('most liked author', () => {
 		expect(result).toEqual(expected)
 	})
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
