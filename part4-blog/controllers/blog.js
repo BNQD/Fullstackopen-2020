@@ -18,19 +18,18 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
 	const body = request.body
-	const token = getTokenFrom(request)
-	const decodedToken = jwt.verify(token, process.env.SECRET)
-	if(!token || !decodedToken.id){
+	const decodedToken = jwt.verify(request.token, process.env.SECRET)
+	if(!request.token || !decodedToken.id){
 		return response.status(401).json({ error: 'token missing or invalid' })
 	}
 	
-	const user = await User.findById(request.body.userId)
+	const user = await User.findById(decodedToken.id)
 	
 	const blog = new Blog ({
 		title: body.title,
 		author: body.author,
 		likes: 0,
-		user: user._id
+		user: decodedToken.id
 	})
 	
 	const savedBlog = await blog.save()
