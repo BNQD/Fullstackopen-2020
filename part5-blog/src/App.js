@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/Login'
 import blogService from './services/blogs'
-
-const axios = require('axios')
+import userService from './services/user'
 
 let token = null
 
@@ -14,21 +14,15 @@ const App = () => {
 	
 	const handleLogin = async (event) => {
     event.preventDefault()
-		const userDetails = {
-			'username':username,
-			'password':password
-		}
-		const response = await axios
-			.post('http://localhost:3001/api/users/login', userDetails)
 		
-		const response_data = response.data
+		const response = await userService.login(username, password) 
     console.log('logging in with', username, password)
 		setUser({
-			"username": response_data.username,
-			"name": response_data.name,
-			"token": response_data.token
+			"username": response.username,
+			"name": response.name,
+			"token": response.token
 			})
-		token = response_data.token
+		token = response.token
   }
 	
   useEffect(() => {
@@ -38,30 +32,10 @@ const App = () => {
   }, [])
 
   if (user === null) {
-    return (
+    return (	
       <div>
-        <h2>Log in to application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-						Username:
-						<input
-							type="text"
-							value={username}
-							name="Username"
-							onChange={({ target }) => setUsername(target.value)}
-						/>
-					</div>
-					<div>
-						Password:
-						<input
-							type="password"
-							value={password}
-							name="Password"
-							onChange={({ target }) => setPassword(target.value)}
-						/>
-					</div>
-					<button type = "submit">Login</button>
-        </form>
+				<LoginForm handleLogin={handleLogin} username={username} 
+					setUsername={setUsername} password={password} setPassword={setPassword}/>
       </div>
     )
 	}
