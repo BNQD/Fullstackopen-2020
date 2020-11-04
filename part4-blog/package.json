@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "setx NODE_ENV test && jest --verbose --runInBand",
+    "test": "setx NODE_ENV test && jest --verbose --runInBand --testTimeout=1000",
     "dev": "setx NODE_ENV development && nodemon index.js",
     "start": "setx NODE_ENV production && node index.js"
   },

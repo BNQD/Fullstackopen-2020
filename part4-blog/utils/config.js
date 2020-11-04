@@ -7,7 +7,12 @@ if (process.env.NODE_ENV ==='test') {
 	MONGODB_URI = process.env.TEST_MONGODB_URI
 }
 
+TEST_USERNAME = process.env.TEST_USERNAME
+TEST_PASSWORD = process.env.TEST_PASSWORD
+
 module.exports = {
 	MONGODB_URI,
+	TEST_USERNAME,
+	TEST_PASSWORD, 
 	PORT
 }
