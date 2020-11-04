@@ -1,29 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import LoginForm from './components/Login'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import userService from './services/user'
 
-let token = null
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
-	const [user, setUser] = useState(null)
-	const [username, setUsername] = useState('Test')
-	const [password, setPassword] = useState('Test')
+	const [user, setUser] = useState({})
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
 	
 	const handleLogin = async (event) => {
     event.preventDefault()
 		
 		const response = await userService.login(username, password) 
-    console.log('logging in with', username, password)
-		setUser({
+		const userObject = {
 			"username": response.username,
 			"name": response.name,
 			"token": response.token
-			})
-		token = response.token
+			}
+
+		window.localStorage.setItem(
+			'User', JSON.stringify(userObject)
+		)
+		
+		setUser(userObject)
+		setUsername('')
+		setPassword('')
   }
+	
+	const handleLogout = async (event) => {
+		window.localStorage.clear()
+		setUser(null)
+	}
 	
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -31,7 +40,8 @@ const App = () => {
     )  
   }, [])
 
-  if (user === null) {
+  if (window.localStorage.getItem('User') === null) {
+		
     return (	
       <div>
 				<LoginForm handleLogin={handleLogin} username={username} 
@@ -43,10 +53,14 @@ const App = () => {
 		return (
     <div>
       <h2>blogs</h2>
-			Logged in as {username}
+			Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
+			<br/>
+			<button onClick={handleLogout}>
+				Logout
+			</button>
     </div>
 		)
 	}

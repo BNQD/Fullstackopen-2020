@@ -40,8 +40,6 @@ app.post('/api/users/', async (request, response) => {
 })
 
 app.post('/api/users/login/', async (request, response) => {
-	
-	
 	const body = request.body
 	const user = await User.findOne({ username: body.username})
 	
@@ -65,9 +63,6 @@ app.post('/api/users/login/', async (request, response) => {
 		.status(200)
 		.send ({ token, username: user.username, name: user.name})
 })
-
-
-
 
 const PORT = config.PORT
 app.listen(PORT, () => {
