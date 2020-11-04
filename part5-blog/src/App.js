@@ -12,21 +12,24 @@ const App = () => {
 	
 	const handleLogin = async (event) => {
     event.preventDefault()
-		
-		const response = await userService.login(username, password) 
-		const userObject = {
-			"username": response.username,
-			"name": response.name,
-			"token": response.token
+		try	{
+			const response = await userService.login(username, password) 
+			const userObject = {
+				"username": response.username,
+				"name": response.name,
+				"token": response.token
 			}
-
-		window.localStorage.setItem(
-			'User', JSON.stringify(userObject)
-		)
+			window.localStorage.setItem(
+				'User', JSON.stringify(userObject)
+			)
+			
+			setUser(userObject)
+			setUsername('')
+			setPassword('')
+		} catch (exeception) {
+			
+		}
 		
-		setUser(userObject)
-		setUsername('')
-		setPassword('')
   }
 	
 	const handleLogout = async (event) => {
