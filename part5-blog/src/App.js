@@ -42,7 +42,18 @@ const App = () => {
 	}
 	
 	const handleFormCreation = async (event) => {
-		
+		if(!(window.localStorage.getItem('User') === null)){
+			const blogObject = {
+				"title": newBlogTitle,
+				"author": newBlogAuthor
+			}
+			
+			const response = await blogService.createBlog(blogObject)
+			
+			console.log(response)
+		}		
+		const blogs = await blogService.getAll()
+		setBlogs(blogs)
 	}
 	
   useEffect(() => {
@@ -63,9 +74,10 @@ const App = () => {
 	else {
 		return (
     <div>
-      <h2>blogs</h2>
-			<CreateBlogForm setNewBlogTitle={setNewBlogTitle} setNewBlogAuthor={setNewBlogAuthor}/>
+			<CreateBlogForm handleFormCreation={handleFormCreation} setNewBlogTitle={setNewBlogTitle} setNewBlogAuthor={setNewBlogAuthor}/>
 			Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
+			<hr/>
+			<h2> Blogs </h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
