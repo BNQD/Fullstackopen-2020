@@ -3,7 +3,6 @@ import React from 'react'
 const LoginForm = (props) => {
 	return(
 		<div>
-			<h2> Create Blog </h2>
 			<form onSubmit={props.handleFormCreation}>
 				Title <input 
 					type='text' 

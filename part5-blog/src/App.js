@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
+import './index.css'
+
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
 import userService from './services/user'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
 	const [user, setUser] = useState({})
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	
+	const [message, setMessage] = useState('')
 	
 	const [newBlogTitle, setNewBlogTitle] = useState('')
 	const [newBlogAuthor, setNewBlogAuthor] = useState('')
@@ -31,7 +36,7 @@ const App = () => {
 			setUsername('')
 			setPassword('')
 		} catch (exeception) {
-			
+			setMessage('Error: Incorrect username or password')
 		}
 		
   }
@@ -42,6 +47,8 @@ const App = () => {
 	}
 	
 	const handleFormCreation = async (event) => {
+		event.preventDefault()
+		
 		if(!(window.localStorage.getItem('User') === null)){
 			const blogObject = {
 				"title": newBlogTitle,
@@ -50,10 +57,12 @@ const App = () => {
 			
 			const response = await blogService.createBlog(blogObject)
 			
-			console.log(response)
+			console.log(response)		
 		}		
+		
 		const blogs = await blogService.getAll()
 		setBlogs(blogs)
+		setMessage('Testtest')
 	}
 	
   useEffect(() => {
@@ -66,15 +75,20 @@ const App = () => {
 		
     return (	
       <div>
+				<h2> Log In to Application </h2>
+				<Notification message={message}/>
 				<LoginForm handleLogin={handleLogin} username={username} 
-					setUsername={setUsername} password={password} setPassword={setPassword}/>
+					setUsername={setUsername} password={password} setPassword={setPassword} setMessage={setMessage}/>
       </div>
     )
 	}
 	else {
 		return (
     <div>
-			<CreateBlogForm handleFormCreation={handleFormCreation} setNewBlogTitle={setNewBlogTitle} setNewBlogAuthor={setNewBlogAuthor}/>
+			<h2> Create Blog </h2>
+			<Notification message={message}/>
+			<CreateBlogForm handleFormCreation={handleFormCreation} setNewBlogTitle={setNewBlogTitle} 
+				setNewBlogAuthor={setNewBlogAuthor}/>
 			Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
 			<hr/>
 			<h2> Blogs </h2>
