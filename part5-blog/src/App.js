@@ -18,9 +18,6 @@ const App = () => {
 	
 	const [message, setMessage] = useState('')
 	
-	const [newBlogTitle, setNewBlogTitle] = useState('')
-	const [newBlogAuthor, setNewBlogAuthor] = useState('')
-	
 	const handleLogin = async (event) => {
     event.preventDefault()
 		try	{
@@ -48,23 +45,10 @@ const App = () => {
 		setUser(null)
 	}
 	
-	const handleFormCreation = async (event) => {
-		event.preventDefault()
-		
-		if(!(window.localStorage.getItem('User') === null)){
-			const blogObject = {
-				"title": newBlogTitle,
-				"author": newBlogAuthor
-			}
-			
-			const response = await blogService.createBlog(blogObject)
-			
-			console.log(response)		
-		}		
-		
+	const handleFormCreation = async (blogObject) => {
+		const response = await blogService.createBlog(blogObject)
 		const blogs = await blogService.getAll()
 		setBlogs(blogs)
-		setMessage(`${newBlogTitle} by ${newBlogAuthor} created!`)
 	}
 	
   useEffect(() => {
@@ -90,8 +74,7 @@ const App = () => {
 			<h2> Create Blog </h2>
 			<Notification message={message}/>
 			<Toggleable buttonLabel='Create Blog'>
-				<CreateBlogForm handleFormCreation={handleFormCreation} setNewBlogTitle={setNewBlogTitle} 
-					setNewBlogAuthor={setNewBlogAuthor}/>
+				<CreateBlogForm handleFormCreation={handleFormCreation} setMessage={setMessage}/>
 			</Toggleable>
 			<hr/>
 			Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
