@@ -4,6 +4,8 @@ import './index.css'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
+import Toggleable from './components/Toggleable'
+
 import blogService from './services/blogs'
 import userService from './services/user'
 import Notification from './components/Notification'
@@ -62,7 +64,7 @@ const App = () => {
 		
 		const blogs = await blogService.getAll()
 		setBlogs(blogs)
-		setMessage('Testtest')
+		setMessage(`${newBlogTitle} by ${newBlogAuthor} created!`)
 	}
 	
   useEffect(() => {
@@ -87,18 +89,23 @@ const App = () => {
     <div>
 			<h2> Create Blog </h2>
 			<Notification message={message}/>
-			<CreateBlogForm handleFormCreation={handleFormCreation} setNewBlogTitle={setNewBlogTitle} 
-				setNewBlogAuthor={setNewBlogAuthor}/>
+			<Toggleable buttonLabel='Create Blog'>
+				<CreateBlogForm handleFormCreation={handleFormCreation} setNewBlogTitle={setNewBlogTitle} 
+					setNewBlogAuthor={setNewBlogAuthor}/>
+			</Toggleable>
+			<hr/>
 			Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
+			<br/>
+			<button onClick={handleLogout}>
+				Logout
+			</button>
 			<hr/>
 			<h2> Blogs </h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
 			<br/>
-			<button onClick={handleLogout}>
-				Logout
-			</button>
+			
     </div>
 		)
 	}

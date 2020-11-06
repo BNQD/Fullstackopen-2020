@@ -18,7 +18,6 @@ const LoginForm = (props) => {
 				<br/>
 				<button type='submit'> Create </button>
 			</form>
-			<hr/>
 		</div>
 	)
 }
