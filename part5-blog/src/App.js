@@ -73,7 +73,7 @@ const App = () => {
     <div>
 			<h2> Create Blog </h2>
 			<Notification message={message}/>
-			<Toggleable buttonLabel='Create Blog'>
+			<Toggleable buttonLabel='Create Blog' closeLabel='Cancel'>
 				<CreateBlogForm handleFormCreation={handleFormCreation} setMessage={setMessage}/>
 			</Toggleable>
 			<hr/>

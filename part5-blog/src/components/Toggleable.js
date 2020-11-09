@@ -5,11 +5,18 @@ const Togglable = (props) => {
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
+	let closeLabel = ''
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
+	if (props.closeLabel === undefined){
+		closeLabel = 'Close'
+	} else {
+		closeLabel=props.closeLabel
+	}
+	
   return (
     <div>
       <div style={hideWhenVisible}>
@@ -17,7 +24,7 @@ const Togglable = (props) => {
       </div>
       <div style={showWhenVisible} >
         {props.children}
-        <button onClick={toggleVisibility}>Cancel</button>
+        <button onClick={toggleVisibility}>{closeLabel}</button>
       </div>
     </div>
   )

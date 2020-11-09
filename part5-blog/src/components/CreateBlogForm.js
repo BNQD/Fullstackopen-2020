@@ -8,7 +8,8 @@ const LoginForm = ({handleFormCreation, setMessage}) => {
 		event.preventDefault()
 		handleFormCreation({
 				"title": newBlogTitle,
-				"author": newBlogAuthor
+				"author": newBlogAuthor,
+				"likes":0
 		})
 		setNewBlogTitle('')
 		setNewBlogAuthor('')
