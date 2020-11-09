@@ -27,20 +27,9 @@ blogRouter.get('/:id', async(request, response) => {
 })
 
 blogRouter.delete('/:id', async(request, response) => {
-	const decodedToken = jwt.verify(request.token, process.env.SECRET)
-	const userid_from_token = decodedToken.id
 	const blog_found = await Blog.findById(request.params.id)
-	console.log(blog_found.user.toString())
-	console.log(userid_from_token.toString())
-	if (userid_from_token.toString() === blog_found.user.toString()){
-		console.log('equal')
-		const result = await Blog.findByIdAndRemove(request.params.id)
-		response.status(204).json(result)
-	} else {
-		response.status(403).json({error: 'unable to delete'})
-		
-	}
-	
+	const result = await Blog.findByIdAndRemove(request.params.id)
+	response.status(204).json(result)
 })
 
 blogRouter.put('/:id', async (request, response) => {

@@ -42,6 +42,11 @@ const App = () => {
 		
   }
 	
+	const fetchBlogs = async () => {
+		const blogs = await blogService.getAll()
+		setBlogs(_.orderBy(blogs, 'likes', 'desc'))
+	}
+	
 	const handleLogout = async (event) => {
 		window.localStorage.clear()
 		setUser(null)
@@ -49,24 +54,23 @@ const App = () => {
 	
 	const handleFormCreation = async (blogObject) => {
 		const response = await blogService.createBlog(blogObject)
-		const blogs = await blogService.getAll()
-		setBlogs(blogs)
+		fetchBlogs()
 	}
 	
 	const handleBlogLike = async (blogObject) => {
 		const updatedBlogObject = {...blogObject, 'likes':blogObject.likes+1}
 		const response = await blogService.blogLike(updatedBlogObject)
-		const blogs = await blogService.getAll()
-		setBlogs(blogs)
+		fetchBlogs()
+	}
+	
+	const handleBlogDelete = async (blogObject) => {
+		const selected = window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
+		selected ? await blogService.deleteBlog(blogObject) : console.log(false)
+		fetchBlogs()
 	}
 	
   useEffect(() => {
-		async function fetchData() {
-			const blogs = await blogService.getAll()
-			console.log(blogs)
-			setBlogs(_.orderBy(blogs, 'likes', 'desc'))
-		}
-		fetchData()
+		fetchBlogs()
   }, [])
 
   if (window.localStorage.getItem('User') === null) {
@@ -97,7 +101,7 @@ const App = () => {
 			<hr/>
 			<h2> Blogs </h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleBlogLike={handleBlogLike}/>
+        <Blog key={blog.id} blog={blog} handleBlogLike={handleBlogLike} handleBlogDelete={handleBlogDelete}/>
       )}
 			<br/>
 			
