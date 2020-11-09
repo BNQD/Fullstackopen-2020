@@ -51,6 +51,13 @@ const App = () => {
 		setBlogs(blogs)
 	}
 	
+	const handleBlogLike = async (blogObject) => {
+		const updatedBlogObject = {...blogObject, 'likes':blogObject.likes+1}
+		const response = await blogService.blogLike(updatedBlogObject)
+		const blogs = await blogService.getAll()
+		setBlogs(blogs)
+	}
+	
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -85,7 +92,7 @@ const App = () => {
 			<hr/>
 			<h2> Blogs </h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleBlogLike={handleBlogLike}/>
       )}
 			<br/>
 			

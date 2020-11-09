@@ -8,7 +8,7 @@ const blogStyle = {
 	marginBottom: 5
 }
 
-const Blog = ({ blog }) => (
+const Blog = ({ blog, handleBlogLike }) => (
 	
 
   <div style={blogStyle}>
@@ -16,7 +16,10 @@ const Blog = ({ blog }) => (
 		<Toggleable buttonLabel='View'>
 			Author: {blog.author}
 			<br/>
-			Likes: {blog.likes} <button> Like </button>
+			Likes: {blog.likes} 
+			<button onClick={() => handleBlogLike(blog)}> 
+				Like 
+			</button>
 			<br/>
 		</Toggleable>
   </div>
