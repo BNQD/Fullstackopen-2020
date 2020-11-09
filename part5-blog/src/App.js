@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './index.css'
 
+import _ from 'lodash'
+
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
@@ -59,9 +61,12 @@ const App = () => {
 	}
 	
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+		async function fetchData() {
+			const blogs = await blogService.getAll()
+			console.log(blogs)
+			setBlogs(_.orderBy(blogs, 'likes', 'desc'))
+		}
+		fetchData()
   }, [])
 
   if (window.localStorage.getItem('User') === null) {
