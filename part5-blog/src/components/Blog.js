@@ -10,22 +10,19 @@ const blogStyle = {
 }
 
 const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => (
-	
-
-  <div style={blogStyle}>
-    {blog.title} 
+	<div style={blogStyle}>
+		{blog.title}
 		<Toggleable buttonLabel='View'>
-			Author: {blog.author}
+		Author: {blog.author}
 			<br/>
-			Likes: {blog.likes} 
-			<button onClick={() => handleBlogLike(blog)}> 
-				Like 
+		Likes: {blog.likes}
+			<button onClick={() => handleBlogLike(blog)}>
+		Like
 			</button>
 			<br/>
 			<button onClick={() => handleBlogDelete(blog)}> Delete </button>
 			<br/>
 		</Toggleable>
-  </div>
+	</div>
 )
-
 export default Blog

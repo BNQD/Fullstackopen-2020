@@ -16,7 +16,7 @@ const Notification = (props) => {
 			<></>
 		)
 	}
-	
+
 }
 
 export default Notification
