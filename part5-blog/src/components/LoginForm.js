@@ -29,9 +29,9 @@ const LoginForm = (props) => {
 }
 
 LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
+	handleLogin: PropTypes.func.isRequired,
+	username: PropTypes.string.isRequired,
+	password: PropTypes.string.isRequired
 }
 
-export default LoginForm 
+export default LoginForm
