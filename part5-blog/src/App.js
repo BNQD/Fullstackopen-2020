@@ -14,7 +14,6 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-	const [user, setUser] = useState({})
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	
@@ -33,7 +32,6 @@ const App = () => {
 				'User', JSON.stringify(userObject)
 			)
 			
-			setUser(userObject)
 			setUsername('')
 			setPassword('')
 		} catch (exeception) {
@@ -49,17 +47,17 @@ const App = () => {
 	
 	const handleLogout = async (event) => {
 		window.localStorage.clear()
-		setUser(null)
+		setBlogs(null)
 	}
 	
 	const handleFormCreation = async (blogObject) => {
-		const response = await blogService.createBlog(blogObject)
+		await blogService.createBlog(blogObject)
 		fetchBlogs()
 	}
 	
 	const handleBlogLike = async (blogObject) => {
 		const updatedBlogObject = {...blogObject, 'likes':blogObject.likes+1}
-		const response = await blogService.blogLike(updatedBlogObject)
+		await blogService.blogLike(updatedBlogObject)
 		fetchBlogs()
 	}
 	
@@ -89,7 +87,7 @@ const App = () => {
     <div>
 			<h2> Create Blog </h2>
 			<Notification message={message}/>
-			<Toggleable buttonLabel='Create Blog' closeLabel='Cancel'>
+			<Toggleable buttonLabel='Create Blog'>
 				<CreateBlogForm handleFormCreation={handleFormCreation} setMessage={setMessage}/>
 			</Toggleable>
 			<hr/>
