@@ -20,10 +20,10 @@ const Togglable = (props) => {
 
 	return (
 		<div>
-			<div style={hideWhenVisible}>
+			<div style={hideWhenVisible} className='visibleToggle'>
 				<button onClick={toggleVisibility}>{props.buttonLabel}</button>
 			</div>
-			<div style={showWhenVisible} >
+			<div style={showWhenVisible} className='hiddenToggle'>
 				{props.children}
 				<button onClick={toggleVisibility}>{closeLabel}</button>
 			</div>
