@@ -23,6 +23,7 @@ const LoginForm = ({ handleFormCreation, setMessage }) => {
 				Title <input
 					type='text'
 					name='Title'
+					id='BlogFormTitle'
 					value={newBlogTitle}
 					onChange={({ target }) => setNewBlogTitle(target.value)}
 				/>
@@ -30,6 +31,7 @@ const LoginForm = ({ handleFormCreation, setMessage }) => {
 				Author <input
 					type='text'
 					name='Author'
+					id='BlogFormAuthor'
 					value={newBlogAuthor}
 					onChange={({ target }) => setNewBlogAuthor(target.value)}
 				/>
