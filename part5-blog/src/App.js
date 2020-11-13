@@ -73,7 +73,7 @@ const App = () => {
 	else {
 		return (
 			<div>
-				<h2> Create Blog </h2>
+				<h2> Create a new Blog </h2>
 				<Notification message={message}/>
 				<Toggleable buttonLabel='Create Blog'>
 					<CreateBlogForm handleFormCreation={handleFormCreation} setMessage={setMessage}/>
@@ -81,14 +81,16 @@ const App = () => {
 				<hr/>
 				Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
 				<br/>
-				<button onClick={handleLogout}>
+				<button onClick={handleLogout} id='logoutbutton'>
 					Logout
 				</button>
 				<hr/>
 				<h2> Blogs </h2>
-				{blogs.map(blog =>
-					<Blog key={blog.id} blog={blog} handleBlogLike={handleBlogLike} handleBlogDelete={handleBlogDelete}/>
-				)}
+				<div id='blog-list'>
+					{blogs.map(blog =>
+						<Blog key={blog.id} blog={blog} handleBlogLike={handleBlogLike} handleBlogDelete={handleBlogDelete}/>
+					)}
+				</div>
 				<br/>
 			</div>
 		)

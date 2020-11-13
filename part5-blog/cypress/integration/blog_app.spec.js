@@ -1,4 +1,25 @@
-describe ('Blog app', function() {
+Cypress.Commands.add('login', ({ username, password }) => {
+	cy.request('POST', 'http://localhost:3001/api/users/login', {
+		username, password
+	}).then (({ body }) => {
+		localStorage.setItem('User', JSON.stringify(body))
+		cy.visit('http://localhost:3000')
+	})
+})
+
+Cypress.Commands.add('createBlog', ({ title, author }) => {
+	cy.request({
+		url: 'http://localhost:3001/api/blogs',
+		method: 'POST', 
+		body: { title, author },
+		headers: {
+			Authorization: `bearer ${JSON.parse(localStorage.getItem('User')).token}`
+		}
+	})
+	cy.visit('http://localhost:3000')
+})
+
+describe ('blog app', function() {
 	beforeEach(function () {
 		cy.request('POST', 'http://localhost:3001/api/testing/reset')
 		const user = {
@@ -10,7 +31,7 @@ describe ('Blog app', function() {
 		cy.visit('http://localhost:3000')
 	})
 	
-	it('Login form is shown by default', function () {
+	it('login form is shown by default', function () {
 		cy.contains('Login')
 	})
 	
@@ -31,6 +52,45 @@ describe ('Blog app', function() {
 			cy.contains('Error: Incorrect username or password')
 			
 			cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
+			
+		})
+	})
+	
+	describe('when logged in', function() {
+		beforeEach(function() {
+			cy.login({ username:'Test', password: 'TestPW'})
+		})
+		
+		it('create blog not displayed by default', function () {
+			cy.get('#blog-creation-form').parent().should('have.css', 'display', 'none')
+		})
+
+		it('can create a blog', function () {
+			cy.contains('Create Blog').click()
+			cy.get('#blog-form-title').type('Test title')
+			cy.get('#blog-form-author').type('Test author')
+			cy.get('#blog-form-button').click()
+			
+			cy.get('.success').contains('Test title by Test author created!')
+			cy.get('#blog-list').contains('Test title')
+		})
+		
+		it.only('can like a blog', function () {
+			cy.createBlog({ title: 'Test title', author: 'Test author' })
+			
+			cy.get('#blog-list').contains('Test title').contains('View').click()
+			cy.get('#blog-list').contains('Test title').contains('Likes: 0')
+			
+			cy.get('#blog-list').contains('Test title').get('.blog-like-button').click()
+			cy.get('#blog-list').contains('Test title').contains('Likes: 1')
+		})
+		
+		it.only('can delete a blog', function () {
+			cy.createBlog({ title: 'Test title', author: 'Test author' })
+			
+			cy.get('#blog-list').contains('Test title').contains('View').click()
+			cy.get('#blog-list').contains('Test title').get('.blog-delete-button').click()
+			cy.get('#blog-list').contains('Test title').should('not.exist')
 			
 		})
 	})

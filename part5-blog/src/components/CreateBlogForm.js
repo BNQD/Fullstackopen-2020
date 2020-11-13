@@ -18,12 +18,12 @@ const LoginForm = ({ handleFormCreation, setMessage }) => {
 	}
 
 	return(
-		<div>
-			<form onSubmit={handleFormSubmit}>
+		<>
+			<form onSubmit={handleFormSubmit} id='blog-creation-form'>
 				Title <input
 					type='text'
 					name='Title'
-					id='BlogFormTitle'
+					id='blog-form-title'
 					value={newBlogTitle}
 					onChange={({ target }) => setNewBlogTitle(target.value)}
 				/>
@@ -31,15 +31,15 @@ const LoginForm = ({ handleFormCreation, setMessage }) => {
 				Author <input
 					type='text'
 					name='Author'
-					id='BlogFormAuthor'
+					id='blog-form-author'
 					value={newBlogAuthor}
 					onChange={({ target }) => setNewBlogAuthor(target.value)}
 				/>
 				<br/>
-				<button type='submit'> Create </button>
+				<button type='submit' id='blog-form-button'> Create </button>
 			</form>
 			<hr/>
-		</div>
+		</>
 	)
 }
 

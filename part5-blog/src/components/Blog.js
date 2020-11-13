@@ -16,11 +16,11 @@ const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => (
 		Author: {blog.author}
 			<br/>
 		Likes: {blog.likes}
-			<button onClick={() => handleBlogLike(blog)}>
+			<button onClick={() => handleBlogLike(blog)} className='blog-like-button'>
 		Like
 			</button>
 			<br/>
-			<button onClick={() => handleBlogDelete(blog)}> Delete </button>
+			<button onClick={() => handleBlogDelete(blog)} className='blog-delete-button'> Delete </button>
 			<br/>
 		</Toggleable>
 	</div>
