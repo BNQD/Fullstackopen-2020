@@ -17,6 +17,12 @@ app.use(middleware.requestLogger)
 app.use('/api/users', userRouter)
 app.use('/api/blogs', blogRouter)
 
+if (process.env.NODE_ENV === 'test'){
+	console.log('Testing environment!')
+	const testingRouter = require('./controllers/testing')
+	app.use('/api/testing', testingRouter)
+}
+
 app.get('/', (request, response) => {
 	response.status(200).send({ test: 'test msg'})
 })
