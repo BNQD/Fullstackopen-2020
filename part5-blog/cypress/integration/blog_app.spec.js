@@ -1,3 +1,6 @@
+const chaiSorted=require('chai-sorted')
+chai.use(chaiSorted)
+
 Cypress.Commands.add('login', ({ username, password }) => {
 	cy.request('POST', 'http://localhost:3001/api/users/login', {
 		username, password
@@ -75,7 +78,7 @@ describe ('blog app', function() {
 			cy.get('#blog-list').contains('Test title')
 		})
 		
-		it.only('can like a blog', function () {
+		it('can like a blog', function () {
 			cy.createBlog({ title: 'Test title', author: 'Test author' })
 			
 			cy.get('#blog-list').contains('Test title').contains('View').click()
@@ -85,12 +88,33 @@ describe ('blog app', function() {
 			cy.get('#blog-list').contains('Test title').contains('Likes: 1')
 		})
 		
-		it.only('can delete a blog', function () {
+		it('can delete a blog', function () {
 			cy.createBlog({ title: 'Test title', author: 'Test author' })
 			
 			cy.get('#blog-list').contains('Test title').contains('View').click()
 			cy.get('#blog-list').contains('Test title').get('.blog-delete-button').click()
 			cy.get('#blog-list').contains('Test title').should('not.exist')
+			
+		})
+		
+		it.only('blogs are sorted by likes', function () {
+			const blog_likes = [4, 2, 1]
+			
+			cy.createBlog({ title: 'Test title 1', author: 'Test author 1' })
+			cy.createBlog({ title: 'Test title 2', author: 'Test author 2' })
+			cy.createBlog({ title: 'Test title 3', author: 'Test author 3' })
+			
+			for (let i = 1; i< 4; i++) { 
+				cy.get('#blog-list').contains(`Test title ${i}`).contains('View').click() 
+				for (let j = 1; j<blog_likes[i-1]; j++){
+					cy.get('#blog-list').contains(`Test title ${i}`).find('.blog-like-button').click() 
+				}
+			}
+			cy.get('#blog-list').get('.blog-likes').as('blogs')
+			
+			cy.get('@blogs').then($blogs => {
+				expect([$blogs[0].outerText, $blogs[1].outerText, $blogs[2].outerText]).to.be.sorted({ descending: true })
+			})
 			
 		})
 	})
