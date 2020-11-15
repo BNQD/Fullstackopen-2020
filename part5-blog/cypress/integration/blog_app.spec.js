@@ -98,7 +98,7 @@ describe ('blog app', function() {
 		})
 		
 		it.only('blogs are sorted by likes', function () {
-			const blog_likes = [4, 2, 1]
+			const blog_likes = [4, 7, 12]
 			
 			cy.createBlog({ title: 'Test title 1', author: 'Test author 1' })
 			cy.createBlog({ title: 'Test title 2', author: 'Test author 2' })
@@ -113,7 +113,11 @@ describe ('blog app', function() {
 			cy.get('#blog-list').get('.blog-likes').as('blogs')
 			
 			cy.get('@blogs').then($blogs => {
-				expect([$blogs[0].outerText, $blogs[1].outerText, $blogs[2].outerText]).to.be.sorted({ descending: true })
+				expect([
+					$blogs[0].outerText.match(/\d+/), 
+					$blogs[1].outerText.match(/\d+/), 
+					$blogs[2].outerText.match(/\d+/)
+				]).to.be.descending
 			})
 			
 		})
