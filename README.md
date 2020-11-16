@@ -34,7 +34,8 @@ Part 5: Testing React Apps
 Part 6: State Management with Redux
  - Redux
   - Action Creators
-	- Dispatch
+  - Dispatch
+  - Stores
 	
  
  
