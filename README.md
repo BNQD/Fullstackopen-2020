@@ -18,24 +18,23 @@ Part 3: Programming a server
 Part 4: Testing Express servers/User administration
  - Backend Structure
  - Testing
-  - Jest
-  - Async functions
+   - Jest
  - User Administration
-  - Bcryptjs (Password Management)
-  - Jsonwebtoken (User Authentication) 
+   - Bcryptjs (Password Management)
+   - Jsonwebtoken (User Authentication) 
  - Joining data in NoSQL db
 
 Part 5: Testing React Apps
+ - Cypress
  - Using browser local storage
  - Integration Testing
- - Cypress
  - Chai-sorted
 
 Part 6: State Management with Redux
  - Redux
-  - Action Creators
-  - Dispatch
-  - Stores
+   - Action Creators
+   - Dispatch
+   - Stores
 	
  
  
