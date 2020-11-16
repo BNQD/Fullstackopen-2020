@@ -29,8 +29,11 @@ Part 5: Testing React Apps
  - Using browser local storage
  - Integration Testing
  - Cypress
+ - Chai-sorted
 
 Part 6: State Management with Redux
+ - Redux
+ - Deep Freeze
  
  
   
