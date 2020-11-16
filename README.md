@@ -29,6 +29,8 @@ Part 5: Testing React Apps
  - Using browser local storage
  - Integration Testing
  - Cypress
+
+Part 6: State Management with Redux
  
  
   
