@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -22,13 +24,14 @@ const initialState = anecdotesAtStart.map(asObject)
 const reducer = (state = initialState, action) => {
   switch (action.type) {
 		case 'VOTE':
-			return state.map ((anecdote) => {
-				if (anecdote.id === action.data.id){
-					return {...anecdote, votes: anecdote.votes + 1}
-				} else {
-					return anecdote
-				}
-			})
+			return _.orderBy(
+				state.map ((anecdote) => {
+					if (anecdote.id === action.data.id){
+						return {...anecdote, votes: anecdote.votes + 1}
+					} else {
+						return anecdote
+					}
+				}), ['votes'], ['desc'])
 		case 'CREATE':
 			return ([...state, action.data])
 			break
