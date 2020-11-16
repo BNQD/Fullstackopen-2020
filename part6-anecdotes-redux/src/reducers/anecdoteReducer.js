@@ -29,6 +29,8 @@ const reducer = (state = initialState, action) => {
 					return anecdote
 				}
 			})
+		case 'CREATE':
+			return ([...state, action.data])
 			break
 		default:
 			console.log('default')
@@ -39,10 +41,20 @@ const reducer = (state = initialState, action) => {
 }
 
 export const vote = (id) => {
-	console.log(id)
 	return {
 		type: 'VOTE',
 		data: { id }
+	}
+}
+
+export const addAnecdote = (anecdote) => {
+	return {
+		type: 'CREATE',
+		data: {
+			content: anecdote,
+			id: getId(),
+			votes: 0
+		}
 	}
 }
 
