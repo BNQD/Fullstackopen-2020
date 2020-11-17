@@ -6,6 +6,7 @@ import { changeMessage, clearMessage } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
 	const anecdotes = useSelector(state => state.anecdotes)
+	const filter = useSelector(state => state.filter)
   const dispatch = useDispatch()
 
   const vote_anecdote = (anecdote) => {
@@ -16,11 +17,10 @@ const AnecdoteList = () => {
 		}, 5000)
   }
 	
-	return (
-		<div>
-			<h3> Anecdote List </h3>
-			{anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
+	const checkFiltered = (anecdote) => {
+		if (anecdote.content.includes(filter) || !filter){
+			return (
+				<div key={anecdote.id}>
           <div>
             {anecdote.content}
           </div>
@@ -29,7 +29,14 @@ const AnecdoteList = () => {
             <button onClick={() => vote_anecdote(anecdote)}>vote</button>
           </div>
         </div>
-      )}
+			)
+		}
+	}
+	
+	return (
+		<div>
+			<h3> Anecdote List </h3>
+			{anecdotes.map(anecdote => checkFiltered(anecdote))}
 		</div>
 	)
 }
