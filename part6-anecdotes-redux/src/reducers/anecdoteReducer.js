@@ -35,7 +35,6 @@ const reducer = (state = initialState, action) => {
 		case 'CREATE':
 			return ([...state, action.data])
 		default:
-			console.log('default')
 			break
 	}
 
