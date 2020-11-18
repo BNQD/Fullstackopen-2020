@@ -12,17 +12,23 @@ const notificationReducer = (state = initialState, action) => {
   return state
 }
 
-export const changeMessage = (msg) => {
-	return ({
-		type: 'CHANGE_MESSAGE',
-		content: msg
-	})
-}
-
-export const clearMessage = () => {
-	return ({
-		type: 'REMOVE_MESSAGE'
-	})
+export const changeMessage = (msg, secondsToClear) => {
+	const clearMessage = () => {
+		return ({
+			type: 'REMOVE_MESSAGE'
+		})
+	}
+	
+	return async (dispatch)=> {
+		dispatch({
+			type: 'CHANGE_MESSAGE',
+			content: msg
+		})
+		setTimeout(() => {
+			dispatch(clearMessage())
+		}, secondsToClear * 1000)
+		
+	}		
 }
 
 export default notificationReducer
