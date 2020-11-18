@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import anecdoteService from '../services/anecdotes'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -21,7 +22,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
 		case 'VOTE':
 			return _.orderBy(
@@ -34,6 +35,8 @@ const reducer = (state = initialState, action) => {
 				}), ['votes'], ['desc'])
 		case 'CREATE':
 			return ([...state, action.data])
+		case 'INIT_ANECDOTES':
+			return action.data
 		default:
 			break
 	}
@@ -58,5 +61,34 @@ export const addAnecdote = (anecdote) => {
 		}
 	}
 }
+
+export const initializeAnecdotes = (data) => {
+	return {
+		type: 'INIT_ANECDOTES',
+		data: data
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default reducer
