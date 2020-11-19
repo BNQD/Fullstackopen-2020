@@ -1,4 +1,5 @@
 const initialState = ''
+let previous_notification_id = 0
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -24,9 +25,13 @@ export const changeMessage = (msg, secondsToClear) => {
 			type: 'CHANGE_MESSAGE',
 			content: msg
 		})
-		setTimeout(() => {
+		if (previous_notification_id != '0'){
+			clearTimeout(previous_notification_id)
+		}
+		previous_notification_id = setTimeout(() => {
 			dispatch(clearMessage())
 		}, secondsToClear * 1000)
+		
 		
 	}		
 }
