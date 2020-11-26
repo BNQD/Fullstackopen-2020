@@ -12,19 +12,41 @@ const Menu = () => {
   }
   return (
     <div>
-			
+			<Link to='/'> Home </Link>
+			<Link to='/anecdotes'> Anecdotes </Link>
+			<Link to='/create_new'> Create New </Link>
     </div>
   )
 }
 
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
-    </ul>
-  </div>
-)
+const AnecdoteList = ({ anecdotes }) => {
+	return (
+		<div>
+			<h2>Anecdotes</h2>
+			<ul>
+				{anecdotes.map(anecdote => 
+					<li key={anecdote.id} >
+						<Link to ={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link>
+					</li>)}
+			</ul>
+		</div>
+	)
+}
+
+const AnecdoteListID = ({ anecdotes }) => {
+	const id = useParams().id
+	const anecdote = anecdotes.find(a => a.id === id)
+	return (
+		<div>
+			<h2>Anecdotes</h2>
+			<ul>
+				<li key={anecdote.id} >
+					<Link to ={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link>
+				</li>
+			</ul>
+		</div>
+	)
+}
 
 const About = () => (
   <div>
@@ -112,8 +134,9 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
   }
 
-  const anecdoteById = (id) =>
-    anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) => {
+		anecdotes.find(a => a.id === id)
+	}
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -129,10 +152,11 @@ const App = () => {
   return (
     <div>
 			<Router>
-				<Link to='/'> Home </Link>
-				<Link to='/anecdotes'> Anecdotes </Link>
-				<Link to='/create_new'> Create New </Link>
+				<Menu/>
 				<Switch>
+					<Route path='/anecdotes/:id'>
+						<AnecdoteListID anecdotes={anecdotes} />
+					</Route>
 					<Route path='/anecdotes'>
 						<AnecdoteList anecdotes={anecdotes} />
 					</Route>
