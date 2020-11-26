@@ -74,6 +74,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+	const history = useHistory()
 
 
   const handleSubmit = (e) => {
@@ -84,6 +85,11 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+		history.push('/anecdotes')
+		props.setNotification(`${content} by ${author} created!`)
+		setTimeout(() => {
+			props.setNotification('')
+		}, 3000)
   }
 
   return (
@@ -151,6 +157,7 @@ const App = () => {
 
   return (
     <div>
+			<p>{notification}</p>
 			<Router>
 				<Menu/>
 				<Switch>
@@ -161,7 +168,7 @@ const App = () => {
 						<AnecdoteList anecdotes={anecdotes} />
 					</Route>
 					<Route path='/create_new'>
-						<CreateNew addNew={addNew} />
+						<CreateNew addNew={addNew} setNotification={setNotification}/>
 					</Route>
 					<Route path='/'>
 						<About />
