@@ -2,8 +2,9 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { reset, update } from '../reducers/blogFormReducer'
 
+import { updateNotification } from '../reducers/notificationReducer'
 
-const LoginForm = ({ handleFormCreation, setMessage }) => {
+const LoginForm = ({ handleFormCreation }) => {
 
 	const blogFields = useSelector(store => store.blogForm)
 	const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const LoginForm = ({ handleFormCreation, setMessage }) => {
 			'likes':0
 		})		
 		dispatch(reset())
-		setMessage(`${blogFields.newBlogTitle} by ${blogFields.newBlogAuthor} created!`)
+		dispatch(updateNotification(`${blogFields.newBlogTitle} by ${blogFields.newBlogAuthor} created!`))
 	}
 
 	return(

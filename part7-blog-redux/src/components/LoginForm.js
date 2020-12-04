@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-const LoginForm = (props) => {
+
+const LoginForm = (props) => {	
 	return(
 		<div>
 			<form onSubmit={props.handleLogin}>

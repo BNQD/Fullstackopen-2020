@@ -12,11 +12,19 @@ import blogService from './services/blogs'
 import userService from './services/user'
 import Notification from './components/Notification'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { updateNotification, resetNotification } from './reducers/notificationReducer'
+
 const App = () => {
+	
+	const dispatch = useDispatch()
+	const message = useSelector(state => state.notification.notificationMessage)
+
 	const [blogs, setBlogs] = useState([])
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-	const [message, setMessage] = useState('')
+	
+	
 	const handleLogin = async (event) => {
 		event.preventDefault()
 		try	{
@@ -31,8 +39,9 @@ const App = () => {
 			)
 			setUsername('')
 			setPassword('')
+			dispatch(resetNotification())
 		} catch (exeception) {
-			setMessage('Error: Incorrect username or password')
+			dispatch(updateNotification('Error: Incorrect username or password'))
 		}
 	}
 	const fetchBlogs = async () => {
@@ -66,7 +75,7 @@ const App = () => {
 				<h2> Log In to Application </h2>
 				<Notification message={message}/>
 				<LoginForm handleLogin={handleLogin} username={username}
-					setUsername={setUsername} password={password} setPassword={setPassword} setMessage={setMessage}/>
+					setUsername={setUsername} password={password} setPassword={setPassword} />
 			</div>
 		)
 	}
@@ -76,7 +85,7 @@ const App = () => {
 				<h2> Create a new Blog </h2>
 				<Notification message={message}/>
 				<Toggleable buttonLabel='Create Blog'>
-					<CreateBlogForm handleFormCreation={handleFormCreation} setMessage={setMessage}/>
+					<CreateBlogForm handleFormCreation={handleFormCreation} />
 				</Toggleable>
 				<hr/>
 				Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
