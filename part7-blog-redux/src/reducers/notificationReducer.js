@@ -6,7 +6,6 @@ const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'NOTIFICATION_UPDATE':
       return {...initialState, notificationMessage: action.content }
-			break
 		case 'NOTIFICATION_RESET':
 			return initialState
     default: return state

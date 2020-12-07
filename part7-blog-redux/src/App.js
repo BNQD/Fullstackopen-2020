@@ -14,16 +14,22 @@ import Notification from './components/Notification'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification, resetNotification } from './reducers/notificationReducer'
+import { blogsInit } from './reducers/blogReducer'
 
 const App = () => {
 	
 	const dispatch = useDispatch()
+	
+	useEffect(() => {
+		dispatch(blogsInit())
+	}, [])
+	
 	const message = useSelector(state => state.notification.notificationMessage)
-
-	const [blogs, setBlogs] = useState([])
+	const blogs = useSelector(state => state.blogs.blogs)
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	
+	console.log(blogs)
 	
 	const handleLogin = async (event) => {
 		event.preventDefault()
@@ -44,31 +50,20 @@ const App = () => {
 			dispatch(updateNotification('Error: Incorrect username or password'))
 		}
 	}
-	const fetchBlogs = async () => {
-		const blogs = await blogService.getAll()
-		setBlogs(_.orderBy(blogs, 'likes', 'desc'))
-	}
 	const handleLogout = async () => {
 		window.localStorage.clear()
-		setBlogs(null)
 	}
 	const handleFormCreation = async (blogObject) => {
 		await blogService.createBlog(blogObject)
-		fetchBlogs()
 	}
 	const handleBlogLike = async (blogObject) => {
 		const updatedBlogObject = { ...blogObject, 'likes':blogObject.likes+1 }
 		await blogService.blogLike(updatedBlogObject)
-		fetchBlogs()
 	}
 	const handleBlogDelete = async (blogObject) => {
 		const selected = window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
 		selected ? await blogService.deleteBlog(blogObject) : console.log(false)
-		fetchBlogs()
 	}
-	useEffect(() => {
-		fetchBlogs()
-	}, [])
 	if (window.localStorage.getItem('User') === null) {
 		return (
 			<div>

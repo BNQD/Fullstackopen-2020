@@ -7,8 +7,9 @@ const initialState = {
 
 const blogReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'INIT':
-      return action.content
+    case 'BLOGS_INIT':
+			console.log('initializing')
+      return {...state, blogs: action.content}
 		case 'RESET':
 			return initialState
     default: return state
@@ -16,14 +17,21 @@ const blogReducer = (state = initialState, action) => {
   
 }
 
-export const init = async () => {
-	const blogs = await blogService.getAll()
-	const ordered_blogs = (_.orderBy(blogs, 'likes', 'desc'))
-	return ({
-		type: 'INIT',
-		content: ordered_blogs
-	})
+export const blogsInit = () => {
+	console.log('calling init')
+	
+	return async dispatch => {
+		const blogs = await blogService.getAll()
+		const ordered_blogs = (_.orderBy(blogs, 'likes', 'desc'))
+		console.log(blogs)
+		dispatch({
+			type: 'BLOGS_INIT',
+			content: ordered_blogs
+		})
+	}
 }
+	
+	
 
 
 
