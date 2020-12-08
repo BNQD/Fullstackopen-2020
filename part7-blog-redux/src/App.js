@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './index.css'
 
-import _ from 'lodash'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
@@ -14,7 +13,7 @@ import Notification from './components/Notification'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification, resetNotification } from './reducers/notificationReducer'
-import { blogsInit, blogsCreate } from './reducers/blogReducer'
+import { blogsInit, blogsCreate, blogDelete } from './reducers/blogReducer'
 
 const App = () => {
 	
@@ -23,7 +22,7 @@ const App = () => {
 	useEffect(() => {
 		console.log('Initializing data...')
 		dispatch(blogsInit())
-	}, [])
+	}, [dispatch])
 	
 	const message = useSelector(state => state.notification.notificationMessage)
 	const blogs = useSelector(state => state.blogs.blogs)
@@ -62,7 +61,10 @@ const App = () => {
 	}
 	const handleBlogDelete = async (blogObject) => {
 		const selected = window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
-		selected ? await blogService.deleteBlog(blogObject) : console.log(false)
+		if (selected) {
+			await blogService.deleteBlog(blogObject)
+			dispatch(blogDelete(blogObject))
+		}
 	}
 	if (window.localStorage.getItem('User') === null) {
 		return (

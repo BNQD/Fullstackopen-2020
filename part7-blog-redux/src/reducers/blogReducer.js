@@ -2,8 +2,7 @@ import blogService from '../services/blogs'
 import _ from 'lodash'
 
 const initialState = {
-  blogs: [],
-	temp: 1
+  blogs: []
 }
 
 const blogReducer = (state = initialState, action) => {
@@ -13,6 +12,8 @@ const blogReducer = (state = initialState, action) => {
       return {...state, blogs: action.content}
 		case 'CREATE_BLOG':
 			return {...state, blogs: [...state.blogs, action.content]}
+		case 'DELETE_BLOG':
+			return ({...state, blogs: state.blogs.filter(x => x.id !== action.content)})
     default: return state
   }
   
@@ -38,6 +39,13 @@ export const blogsCreate = (newBlog) => {
 		content: newBlog
 	})
 }	
+
+export const blogDelete = (newBlog) => {
+	return({
+		type: 'DELETE_BLOG',
+		content: newBlog.id
+	})
+}
 	
 
 
