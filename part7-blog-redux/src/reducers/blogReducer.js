@@ -14,6 +14,8 @@ const blogReducer = (state = initialState, action) => {
 			return {...state, blogs: [...state.blogs, action.content]}
 		case 'DELETE_BLOG':
 			return ({...state, blogs: state.blogs.filter(x => x.id !== action.content)})
+		case 'LIKE_BLOG':
+			return({...state, blogs: state.blogs.map(x => x.id === action.content.id ? action.content : x)})
     default: return state
   }
   
@@ -47,6 +49,13 @@ export const blogDelete = (newBlog) => {
 	})
 }
 	
+	
+export const blogLike = (updatedBlog) => {
+	return ({
+		type: 'LIKE_BLOG',
+		content: updatedBlog
+	})
+}
 
 
 

@@ -13,7 +13,7 @@ import Notification from './components/Notification'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification, resetNotification } from './reducers/notificationReducer'
-import { blogsInit, blogsCreate, blogDelete } from './reducers/blogReducer'
+import { blogsInit, blogsCreate, blogDelete, blogLike } from './reducers/blogReducer'
 
 const App = () => {
 	
@@ -58,6 +58,7 @@ const App = () => {
 	const handleBlogLike = async (blogObject) => {
 		const updatedBlogObject = { ...blogObject, 'likes':blogObject.likes+1 }
 		await blogService.blogLike(updatedBlogObject)
+		dispatch(blogLike(updatedBlogObject))
 	}
 	const handleBlogDelete = async (blogObject) => {
 		const selected = window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
