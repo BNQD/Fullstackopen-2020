@@ -14,13 +14,14 @@ import Notification from './components/Notification'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification, resetNotification } from './reducers/notificationReducer'
-import { blogsInit } from './reducers/blogReducer'
+import { blogsInit, blogsCreate } from './reducers/blogReducer'
 
 const App = () => {
 	
 	const dispatch = useDispatch()
 	
 	useEffect(() => {
+		console.log('Initializing data...')
 		dispatch(blogsInit())
 	}, [])
 	
@@ -28,8 +29,6 @@ const App = () => {
 	const blogs = useSelector(state => state.blogs.blogs)
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-	
-	console.log(blogs)
 	
 	const handleLogin = async (event) => {
 		event.preventDefault()
@@ -54,7 +53,8 @@ const App = () => {
 		window.localStorage.clear()
 	}
 	const handleFormCreation = async (blogObject) => {
-		await blogService.createBlog(blogObject)
+		const newBlogObject = await blogService.createBlog(blogObject)
+		dispatch(blogsCreate(newBlogObject))
 	}
 	const handleBlogLike = async (blogObject) => {
 		const updatedBlogObject = { ...blogObject, 'likes':blogObject.likes+1 }
