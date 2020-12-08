@@ -1,38 +1,61 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import userService from '../services/user'
+
+import { useDispatch } from 'react-redux'
+import { updateNotification, resetNotification } from '../reducers/notificationReducer'
+import { saveUserDetails } from '../reducers/userReducer'
 
 const LoginForm = (props) => {	
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
+	const dispatch = useDispatch()
+	
+	const handleLogin = async (event) => {
+		event.preventDefault()
+		try	{
+			const response = await userService.login(username, password)
+			const userObject = {
+				'username': response.username,
+				'name': response.name,
+				'token': response.token
+			}
+			window.localStorage.setItem(
+				'User', JSON.stringify(userObject)
+			)
+			setUsername('')
+			setPassword('')
+			dispatch(resetNotification())
+			dispatch(saveUserDetails(userObject))
+		} catch (exeception) {
+			dispatch(updateNotification('Error: Incorrect username or password'))
+		}
+	}
+	
 	return(
 		<div>
-			<form onSubmit={props.handleLogin}>
+			<form onSubmit={handleLogin}>
 				<div>
 					Username:
 					<input
 						type="text"
-						value={props.username}
+						value={username}
 						id="username"
-						onChange={({ target }) => props.setUsername(target.value)}
+						onChange={({ target }) => setUsername(target.value)}
 					/>
 				</div>
 				<div>
 					Password:
 					<input
 						type="password"
-						value={props.password}
+						value={password}
 						id="password"
-						onChange={({ target }) => props.setPassword(target.value)}
+						onChange={({ target }) => setPassword(target.value)}
 					/>
 				</div>
 				<button type = "submit" id="login-button">Login</button>
 			</form>
 		</div>
 	)
-}
-
-LoginForm.propTypes = {
-	handleLogin: PropTypes.func.isRequired,
-	username: PropTypes.string.isRequired,
-	password: PropTypes.string.isRequired
 }
 
 export default LoginForm

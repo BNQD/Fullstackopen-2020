@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './index.css'
 
 
@@ -8,11 +8,9 @@ import CreateBlogForm from './components/CreateBlogForm'
 import Toggleable from './components/Toggleable'
 
 import blogService from './services/blogs'
-import userService from './services/user'
 import Notification from './components/Notification'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { updateNotification, resetNotification } from './reducers/notificationReducer'
 import { blogsInit, blogsCreate, blogDelete, blogLike } from './reducers/blogReducer'
 import { saveUserDetails } from './reducers/userReducer'
 
@@ -31,29 +29,9 @@ const App = () => {
 	const message = useSelector(state => state.notification.notificationMessage)
 	const blogs = useSelector(state => state.blogs.blogs)
 	const user = useSelector(state => state.user)
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
 	
-	const handleLogin = async (event) => {
-		event.preventDefault()
-		try	{
-			const response = await userService.login(username, password)
-			const userObject = {
-				'username': response.username,
-				'name': response.name,
-				'token': response.token
-			}
-			window.localStorage.setItem(
-				'User', JSON.stringify(userObject)
-			)
-			setUsername('')
-			setPassword('')
-			dispatch(resetNotification())
-			dispatch(saveUserDetails(userObject))
-		} catch (exeception) {
-			dispatch(updateNotification('Error: Incorrect username or password'))
-		}
-	}
+	
+	
 	const handleLogout = async () => {
 		window.localStorage.clear()
 	}
@@ -80,8 +58,7 @@ const App = () => {
 			<div>
 				<h2> Log In to Application </h2>
 				<Notification message={message}/>
-				<LoginForm handleLogin={handleLogin} username={username}
-					setUsername={setUsername} password={password} setPassword={setPassword} />
+				<LoginForm  />
 			</div>
 		)
 	}
