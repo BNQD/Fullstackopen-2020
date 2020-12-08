@@ -14,6 +14,7 @@ import Notification from './components/Notification'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification, resetNotification } from './reducers/notificationReducer'
 import { blogsInit, blogsCreate, blogDelete, blogLike } from './reducers/blogReducer'
+import { saveUserDetails } from './reducers/userReducer'
 
 const App = () => {
 	
@@ -22,10 +23,14 @@ const App = () => {
 	useEffect(() => {
 		console.log('Initializing data...')
 		dispatch(blogsInit())
+		if (window.localStorage.getItem('User') !== null) {
+			dispatch(saveUserDetails(JSON.parse(window.localStorage.getItem('User'))))
+		}
 	}, [dispatch])
 	
 	const message = useSelector(state => state.notification.notificationMessage)
 	const blogs = useSelector(state => state.blogs.blogs)
+	const user = useSelector(state => state.user)
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	
@@ -44,6 +49,7 @@ const App = () => {
 			setUsername('')
 			setPassword('')
 			dispatch(resetNotification())
+			dispatch(saveUserDetails(userObject))
 		} catch (exeception) {
 			dispatch(updateNotification('Error: Incorrect username or password'))
 		}
@@ -67,6 +73,8 @@ const App = () => {
 			dispatch(blogDelete(blogObject))
 		}
 	}
+	
+	//User not logged in - Show login form
 	if (window.localStorage.getItem('User') === null) {
 		return (
 			<div>
@@ -86,7 +94,7 @@ const App = () => {
 					<CreateBlogForm handleFormCreation={handleFormCreation} />
 				</Toggleable>
 				<hr/>
-				Logged in as {JSON.parse(window.localStorage.getItem('User')).name}
+				Logged in as {user.name}
 				<br/>
 				<button onClick={handleLogout} id='logoutbutton'>
 					Logout

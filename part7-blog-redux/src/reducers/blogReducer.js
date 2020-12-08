@@ -9,7 +9,7 @@ const blogReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INIT_BLOG':
 			console.log('initializing')
-      return {...state, blogs: action.content}
+      return {...state}
 		case 'CREATE_BLOG':
 			return {...state, blogs: [...state.blogs, action.content]}
 		case 'DELETE_BLOG':
