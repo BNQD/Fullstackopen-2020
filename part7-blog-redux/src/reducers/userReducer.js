@@ -13,16 +13,22 @@ const userReducer = (state = initialState, action) => {
 				name: action.content.name, 
 				token: action.content.token,
 				username: action.content.username}
+		case 'CLEAR_USER_DETAILS':
+			return {...initialState}
     default: return state
   }
 }
 
 export const saveUserDetails = (userDetails) => {
-	console.log('saving user details')
-	console.log(userDetails)
 	return ({
 			type: 'USER_LOGIN',
 			content: userDetails
+	})
+}
+
+export const clearUserDetails = () => {
+	return ({
+		type: 'CLEAR_USER_DETAILS'
 	})
 }
 

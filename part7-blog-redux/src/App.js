@@ -6,12 +6,13 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
 import Toggleable from './components/Toggleable'
+import Logout from './components/Logout'
 
 import blogService from './services/blogs'
 import Notification from './components/Notification'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { blogsInit, blogsCreate, blogDelete, blogLike } from './reducers/blogReducer'
+import { blogsInit, blogDelete, blogLike } from './reducers/blogReducer'
 import { saveUserDetails } from './reducers/userReducer'
 
 const App = () => {
@@ -19,26 +20,15 @@ const App = () => {
 	const dispatch = useDispatch()
 	
 	useEffect(() => {
-		console.log('Initializing data...')
-		dispatch(blogsInit())
 		if (window.localStorage.getItem('User') !== null) {
+			dispatch(blogsInit())
 			dispatch(saveUserDetails(JSON.parse(window.localStorage.getItem('User'))))
 		}
 	}, [dispatch])
 	
-	const message = useSelector(state => state.notification.notificationMessage)
+	
 	const blogs = useSelector(state => state.blogs.blogs)
 	const user = useSelector(state => state.user)
-	
-	
-	
-	const handleLogout = async () => {
-		window.localStorage.clear()
-	}
-	const handleFormCreation = async (blogObject) => {
-		const newBlogObject = await blogService.createBlog(blogObject)
-		dispatch(blogsCreate(newBlogObject))
-	}
 	const handleBlogLike = async (blogObject) => {
 		const updatedBlogObject = { ...blogObject, 'likes':blogObject.likes+1 }
 		await blogService.blogLike(updatedBlogObject)
@@ -57,7 +47,7 @@ const App = () => {
 		return (
 			<div>
 				<h2> Log In to Application </h2>
-				<Notification message={message}/>
+				<Notification />
 				<LoginForm  />
 			</div>
 		)
@@ -66,16 +56,14 @@ const App = () => {
 		return (
 			<div>
 				<h2> Create a new Blog </h2>
-				<Notification message={message}/>
+				<Notification />
 				<Toggleable buttonLabel='Create Blog'>
-					<CreateBlogForm handleFormCreation={handleFormCreation} />
+					<CreateBlogForm />
 				</Toggleable>
 				<hr/>
 				Logged in as {user.name}
 				<br/>
-				<button onClick={handleLogout} id='logoutbutton'>
-					Logout
-				</button>
+				<Logout/>
 				<hr/>
 				<h2> Blogs </h2>
 				<div id='blog-list'>

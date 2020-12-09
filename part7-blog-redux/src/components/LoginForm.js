@@ -4,6 +4,7 @@ import userService from '../services/user'
 import { useDispatch } from 'react-redux'
 import { updateNotification, resetNotification } from '../reducers/notificationReducer'
 import { saveUserDetails } from '../reducers/userReducer'
+import { blogsInit } from '../reducers/blogReducer'
 
 const LoginForm = (props) => {	
 	const [username, setUsername] = useState('')
@@ -26,6 +27,7 @@ const LoginForm = (props) => {
 			setPassword('')
 			dispatch(resetNotification())
 			dispatch(saveUserDetails(userObject))
+			dispatch(blogsInit())
 		} catch (exeception) {
 			dispatch(updateNotification('Error: Incorrect username or password'))
 		}
