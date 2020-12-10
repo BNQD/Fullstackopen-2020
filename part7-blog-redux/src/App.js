@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './index.css'
 
 import Home from './components/Home'
+import Header from './components/Header'
 import LoginForm from './components/LoginForm'
 import UserInfo from './components/UserInfo'
 
@@ -11,7 +12,6 @@ import { blogsInit } from './reducers/blogReducer'
 import { saveUserDetails } from './reducers/userReducer'
 
 const App = () => {
-	
 	const dispatch = useDispatch()
 	
 	useEffect(() => {
@@ -21,7 +21,10 @@ const App = () => {
 		}
 	}, [dispatch])
 	
+	
+	/* eslint-disable no-unused-vars */
 	const user = useSelector(state => state.user)
+	/* eslint-enable no-unused-vars */
 	
 	//User not logged in - Show login form
 	if (window.localStorage.getItem('User') === null) {
@@ -31,6 +34,8 @@ const App = () => {
 	}
 	else {
 		return (
+		<div> 
+		<Header />
 		<Router>
 			<Switch>
 				<Route path="/users">
@@ -41,6 +46,7 @@ const App = () => {
 				</Route>
 			</Switch>
 		</Router>
+		</div>
 		)
 	}
 }

@@ -18,12 +18,7 @@ const Home = () => {
 				<Toggleable buttonLabel='Create Blog'>
 					<CreateBlogForm />
 				</Toggleable>
-				<hr/>
-				Logged in as {user.name}
-				<br/>
-				<Logout/>
-				<hr/>
-				<h2> Blogs </h2>
+				<h2> Blog List </h2>
 				<div id='blog-list'>
 					{blogs.map(blog =>
 						<Blog key={blog.id} blog={blog} />
