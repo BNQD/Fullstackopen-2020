@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import userService from '../services/user'
 
-import { useDispatch } from 'react-redux'
+import Notification from './Notification'
+
 import { updateNotification, resetNotification } from '../reducers/notificationReducer'
 import { saveUserDetails } from '../reducers/userReducer'
 import { blogsInit } from '../reducers/blogReducer'
@@ -35,27 +37,31 @@ const LoginForm = (props) => {
 	
 	return(
 		<div>
-			<form onSubmit={handleLogin}>
-				<div>
-					Username:
-					<input
-						type="text"
-						value={username}
-						id="username"
-						onChange={({ target }) => setUsername(target.value)}
-					/>
-				</div>
-				<div>
-					Password:
-					<input
-						type="password"
-						value={password}
-						id="password"
-						onChange={({ target }) => setPassword(target.value)}
-					/>
-				</div>
-				<button type = "submit" id="login-button">Login</button>
-			</form>
+			<h2> Log In to Application </h2>
+			<Notification />
+			<div>
+				<form onSubmit={handleLogin}>
+					<div>
+						Username:
+						<input
+							type="text"
+							value={username}
+							id="username"
+							onChange={({ target }) => setUsername(target.value)}
+						/>
+					</div>
+					<div>
+						Password:
+						<input
+							type="password"
+							value={password}
+							id="password"
+							onChange={({ target }) => setPassword(target.value)}
+						/>
+					</div>
+					<button type = "submit" id="login-button">Login</button>
+				</form>
+			</div>
 		</div>
 	)
 }
