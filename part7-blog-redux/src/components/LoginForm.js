@@ -20,7 +20,8 @@ const LoginForm = (props) => {
 			const userObject = {
 				'username': response.username,
 				'name': response.name,
-				'token': response.token
+				'token': response.token,
+				'userID': response.userID
 			}
 			window.localStorage.setItem(
 				'User', JSON.stringify(userObject)

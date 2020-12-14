@@ -13,4 +13,9 @@ const login = async (username, password) => {
 	return response.data
 }
 
-export default { login }
+const getUsers = async () => {
+	const response = await axios.get(baseUrl)
+	return response.data
+}
+
+export default { login, getUsers }

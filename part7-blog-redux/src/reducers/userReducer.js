@@ -12,7 +12,8 @@ const userReducer = (state = initialState, action) => {
 			return {...initialState, 
 				name: action.content.name, 
 				token: action.content.token,
-				username: action.content.username}
+				username: action.content.username,
+				userID: action.content.userID}
 		case 'CLEAR_USER_DETAILS':
 			return {...initialState,
 				name: '',

@@ -3,13 +3,11 @@ import { useSelector } from 'react-redux'
 
 import CreateBlogForm from '../components/CreateBlogForm'
 import Toggleable from '../components/Toggleable'
-import Logout from '../components/Logout'
 import Notification from '../components/Notification'
 import Blog from '../components/Blog'
 
 const Home = () => {
 	const blogs = useSelector(state => state.blogs.blogs)
-	const user = useSelector(state => state.user)
 	
 	return (
 			<div>
