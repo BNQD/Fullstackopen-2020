@@ -7,6 +7,7 @@ import Home from './components/Home'
 import Header from './components/Header'
 import LoginForm from './components/LoginForm'
 import UserInfo from './components/UserInfo'
+import SpecificUserInfo from './components/SpecificUserInfo'
 
 import { blogsInit } from './reducers/blogReducer'
 import { saveUserDetails } from './reducers/userReducer'
@@ -38,6 +39,9 @@ const App = () => {
 		<Header />
 		<Router>
 			<Switch>
+				<Route path="/users/:id">
+					<SpecificUserInfo />
+				</Route>
 				<Route path="/users">
 					<UserInfo />
 				</Route>
