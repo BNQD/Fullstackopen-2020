@@ -9,12 +9,13 @@ import { blogsCreate } from '../reducers/blogReducer'
 const LoginForm = () => {
 	const blogFields = useSelector(store => store.blogForm)
 	const dispatch = useDispatch()
-	const currentUser = useSelector(store => store.user.name)
+	const currentUser = useSelector(store => store.user)
 	const handleFormSubmit = (event) => {
 		event.preventDefault()
 		handleFormCreation({
 			'title': blogFields.newBlogTitle,
-			'author': currentUser,
+			'author': currentUser.name,
+			'userID': currentUser.userID,
 			'likes':0
 		})		
 		dispatch(reset())
