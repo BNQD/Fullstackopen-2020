@@ -8,4 +8,7 @@ const calculateBmi = (weight: number, height: number) => {
 		return 'underweight'
 	}
 }
-console.log(calculateBmi(74, 1.80))
+
+const a: number = Number(process.argv[2])
+const b: number = Number(process.argv[3])
+console.log(calculateBmi(a, b))

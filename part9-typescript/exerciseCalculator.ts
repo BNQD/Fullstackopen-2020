@@ -33,4 +33,8 @@ const calculateExercises = (hours: number[], target: number) => {
 	return (training_details)
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+const input = process.argv
+const hours = input.slice(2, input.length).map(x=>+x)
+console.log(hours)
+
+console.log(calculateExercises(hours.slice(0, hours.length - 1), hours[hours.length-1]))
