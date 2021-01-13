@@ -1,7 +1,7 @@
-import express from 'express'
+import express from 'express';
 const app = express();
 
-import { calculateBmi } from './bmiCalculator'
+import { calculateBmi } from './bmiCalculator';
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
@@ -9,27 +9,27 @@ app.get('/hello', (_req, res) => {
 
 app.get('/bmi', (req, res) => {
 	
-	const weight = req.query.weight
-	const height = req.query.height
+	const weight = req.query.weight;
+	const height = req.query.height;
 	
-	let output = {}
+	let output = {};
 	
 	if (weight === undefined || height === undefined){
 		output = {
 			error: "missing inputs"
-		}
+		};
 	}
 	else {
-		const result = calculateBmi(+weight!, +height!)
+		const result = calculateBmi(+weight, +height);
 		output = {
 			weight,
 			height,
 			result
-		}
+		};
 	}
 	
 
-	res.send(output)
+	res.send(output);
 });
 
 const PORT = 3003;

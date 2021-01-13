@@ -1,23 +1,23 @@
 const calculateExercises = (hours: number[], target: number) => {
-	const sum = hours.reduce((a, b) => a + b, 0)
-	const average = (sum/hours.length)
+	const sum = hours.reduce((a, b) => a + b, 0);
+	const average = (sum/hours.length);
 	
 	const rating_calc = (average: number, target: number) => {
-		const rounded_average = Math.round(average)
+		const rounded_average = Math.round(average);
 		if (rounded_average < target) {
-			return 1
+			return 1;
 		} else if (rounded_average === target) {
-			return 2
+			return 2;
 		} else {
-			return 3
+			return 3;
 		}
-	}
+	};
 	
 	const rating_dict = {
 		1: 'target not met',
 		2: 'target met',
 		3: 'target exceeded'
-	}
+	};
 	
 	
 	const training_details = {
@@ -28,13 +28,13 @@ const calculateExercises = (hours: number[], target: number) => {
 		ratingDescription: rating_dict[rating_calc(average, target)],
 		target,
 		average: average
-	}
+	};
 	
-	return (training_details)
-}
+	return (training_details);
+};
 
-const input = process.argv
-const hours = input.slice(2, input.length).map(x=>+x)
-console.log(hours)
+const input = process.argv;
+const hours = input.slice(2, input.length).map(x=>+x);
+console.log(hours);
 
-console.log(calculateExercises(hours.slice(0, hours.length - 1), hours[hours.length-1]))
+console.log(calculateExercises(hours.slice(0, hours.length - 1), hours[hours.length-1]));
