@@ -38,3 +38,5 @@ const hours = input.slice(2, input.length).map(x=>+x);
 console.log(hours);
 
 console.log(calculateExercises(hours.slice(0, hours.length - 1), hours[hours.length-1]));
+
+export { calculateExercises }
